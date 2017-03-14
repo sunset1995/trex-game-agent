@@ -19,7 +19,7 @@ w = 120
 h = int(dragonSize[1] * 2)
 
 def hasObstacle():
-    im = screenshot(region=(x, y, w, h))
+    im = util.screenshot(region=(x, y, w, h))
     return (83, 83, 83) in im.im
 
 
