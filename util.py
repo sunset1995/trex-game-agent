@@ -23,11 +23,6 @@ def screenshot(region=None):
         # Get pixels on image
         sct.get_pixels(monitor)
         im = Image.frombytes('RGB', (sct.width, sct.height), sct.image)
-    
-    # Crop if needed
-    if region != None and type(region)==tuple and len(region)==4:
-        # To make this function pyautogui like
-        im = im.crop((region[0], region[1], region[0]+region[2], region[1]+region[3]))
 
     return im
 
