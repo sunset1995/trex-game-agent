@@ -32,7 +32,7 @@ def screenshot(region=None):
 
 
 # Evaluate screenshot time in seconds
-def evalutae_screenshot_time():
+def evalutae_screenshot_time(region=None):
     t = time.time()
-    im = screenshot()
+    im = screenshot(region)
     return time.time() - t
