@@ -8,6 +8,8 @@ from mss import mss
 #     region: optional, four-integer tuple (left, top, width, height)
 def screenshot(region=None):
     im = None
+    monitors = None
+    
     with mss() as sct:
         # Retrieve monitors informations:
         monitors = sct.enum_display_monitors()
@@ -17,12 +19,15 @@ def screenshot(region=None):
         if region != None:
             monitor['left'] = int(region[0])
             monitor['top'] = int(region[1])
-            monitor['width'] = int(region[2])
+            monitor['width'] = (int(region[2]) // 80 + int(region[2] % 80 != 0)) * 80
             monitor['height'] = int(region[3])
 
         # Get pixels on image
         sct.get_pixels(monitor)
         im = Image.frombytes('RGB', (sct.width, sct.height), sct.image)
+
+    if monitor['width'] != region[2]:
+        im = im.crop((0, 0, region[2], region[3]))
 
     return im
 
