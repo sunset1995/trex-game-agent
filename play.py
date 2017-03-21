@@ -15,19 +15,22 @@ print('Dragon Position:', dragonPos)
 # Scan area
 x = int(dragonPos[0] + dragonSize[0] + 25)
 y = int(dragonPos[1])
-w = 120
+w = None
 h = int(dragonSize[1] * 2)
 
 def hasObstacle():
     im = util.screenshot(region=(x, y, w, h))
     return (83, 83, 83) in im.im
 
-
 # Adjust scan area as speed up
 s_time = time.time()
-level = (130, 150, 175, 200, 240, 280, )
-upgrade_time = (30, 40, 55, 70, 100, 300, )
+level = (100, 110, 130, 165, 180, 230, 260, )
+upgrade_time = (-1, 30, 40, 55, 70, 100, 300, )
 now_level = 0
+
+# FPS measure
+fps_cnt = 0
+fps_t = time.time()
 
 
 # Start game
@@ -35,10 +38,18 @@ pyautogui.click(dragonPos)
 pyautogui.press(' ')
 
 while True:
-    if hasObstacle():
-        pyautogui.press(' ')
-
     if now_level < len(level) and time.time() - s_time > upgrade_time[now_level]:
         w = level[now_level]
         now_level += 1
-        print('upgrade', w)
+        print('level %d' % w)
+
+    if hasObstacle():
+        pyautogui.press(' ')
+
+    # FPS measure
+    fps_cnt += 1
+    now_t = time.time()
+    if now_t - fps_t > 1:
+        print('fps %.2f' % (fps_cnt / (now_t - fps_t)), end='\r')
+        fps_cnt = 0
+        fps_t = time.time()
